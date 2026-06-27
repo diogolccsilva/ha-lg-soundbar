@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-06-27
+
+### Added
+- **AV sync** control — a `number` for the audio delay (0–300 ms, 10 ms steps),
+  to correct lip-sync. The bar doesn't report bounds for this field, so the
+  known LG range is used.
+- **Sound-mode names** for newer IDs confirmed on the S95TR: `19` AI Sound Pro,
+  `21` Sports, `22` Game, `26` Clear Voice Pro. The equaliser map is now an
+  explicit ID→name mapping so newer bars' higher IDs resolve correctly; unknown
+  IDs still fall back to a stable generic label.
+
+### Changed
+- **Tone controls (bass / middle / treble)** moved back under *Configuration*
+  alongside the channel levels (reverts the 0.1.3 placement).
+
+### Notes
+- Selecting a sound mode the bar doesn't support for the current source/content
+  makes it revert to its default (e.g. AI Sound Pro). This is the soundbar's
+  behaviour, not a bug.
+- **Voice feedback** (`b_voice_feedback`) is on the roadmap: in the app the
+  toggle can be greyed out, implying a pre-condition that must be mirrored before
+  it can be exposed reliably.
+
 ## [0.1.4] - 2026-06-27
 
 ### Fixed

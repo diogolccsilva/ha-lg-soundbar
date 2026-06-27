@@ -24,10 +24,8 @@ class LevelSpec:
     message: str  # which view-info message the field lives in
     fallback_min: float = -6
     fallback_max: float = 6
-    # Channel levels sit under "Configuration"; tone controls (bass/middle/
-    # treble) are surfaced in the primary "Controls" section so they're grouped
-    # separately, mirroring the app's dedicated tone settings.
-    entity_category: EntityCategory | None = EntityCategory.CONFIG
+    step: float = 1
+    unit: str | None = None
 
     @property
     def base(self) -> str:
@@ -61,17 +59,25 @@ LEVEL_SPECS: tuple[LevelSpec, ...] = (
     ),
 )
 
-# EQ tone (EQ_VIEW_INFO). Surfaced in the primary section, separate from the
-# per-channel level sliders under Configuration.
+# EQ tone (EQ_VIEW_INFO).
 TONE_SPECS: tuple[LevelSpec, ...] = (
+    LevelSpec(key="i_bass", translation_key="bass", message=MSG_EQ),
+    LevelSpec(key="i_middle", translation_key="middle", message=MSG_EQ),
+    LevelSpec(key="i_treble", translation_key="treble", message=MSG_EQ),
+)
+
+# Other adjustable settings (SETTING_VIEW_INFO) that aren't dB levels. AV sync
+# is an audio-delay in milliseconds (0-300 ms in 10 ms steps on LG bars); the
+# bar doesn't report bounds for it, so we use the known fixed range.
+OTHER_SPECS: tuple[LevelSpec, ...] = (
     LevelSpec(
-        key="i_bass", translation_key="bass", message=MSG_EQ, entity_category=None
-    ),
-    LevelSpec(
-        key="i_middle", translation_key="middle", message=MSG_EQ, entity_category=None
-    ),
-    LevelSpec(
-        key="i_treble", translation_key="treble", message=MSG_EQ, entity_category=None
+        key="i_av_sync",
+        translation_key="av_sync",
+        message=MSG_SETTING,
+        fallback_min=0,
+        fallback_max=300,
+        step=10,
+        unit="ms",
     ),
 )
 
@@ -86,7 +92,7 @@ async def async_setup_entry(
     data = coordinator.data or {}
     entities = [
         LGSoundbarLevel(coordinator, spec)
-        for spec in (*LEVEL_SPECS, *TONE_SPECS)
+        for spec in (*LEVEL_SPECS, *TONE_SPECS, *OTHER_SPECS)
         if spec.key in data
     ]
     async_add_entities(entities)
@@ -95,14 +101,15 @@ async def async_setup_entry(
 class LGSoundbarLevel(LGSoundbarEntity, NumberEntity):
     """A single adjustable level/tone value, bounded by the bar's own limits."""
 
-    _attr_native_step = 1
     _attr_mode = NumberMode.SLIDER
+    _attr_entity_category = EntityCategory.CONFIG
 
     def __init__(self, coordinator: LGSoundbarCoordinator, spec: LevelSpec) -> None:
         super().__init__(coordinator)
         self._spec = spec
         self._attr_translation_key = spec.translation_key
-        self._attr_entity_category = spec.entity_category
+        self._attr_native_step = spec.step
+        self._attr_native_unit_of_measurement = spec.unit
         self._attr_unique_id = f"{coordinator.unique_id}_{spec.key}"
 
     @property

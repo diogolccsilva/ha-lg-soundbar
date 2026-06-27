@@ -22,6 +22,7 @@ A single Home Assistant **device** per soundbar, with:
   (woofer, center, side, top, rear, rear side, rear top, dialog). Ranges come
   from the soundbar itself.
 - **EQ tone** — bass, middle, treble.
+- **AV sync** — audio delay (0–300 ms) to fix lip-sync.
 - **Sound-processing switches** — Neural:X, Dynamic Range Control, Night mode,
   Auto volume, Auto power.
 - **Real-time updates** — the soundbar *pushes* changes (from the app, remote,
@@ -75,8 +76,19 @@ Copy `custom_components/lg_soundbar_plus/` into your Home Assistant
   standby and is woken via a "power key" press. (If your bar has Wi-Fi standby
   disabled it won't be reachable when off; then use HDMI-CEC or
   [Wake-on-LAN](https://www.home-assistant.io/integrations/wake_on_lan/).)
-- **Newer sound modes**: IDs the protocol map doesn't have a name for are shown
-  as a stable generic label (e.g. `Mode 26`) and still select correctly.
+- **Sound modes**: the bar advertises its available modes and the integration
+  maps known IDs to names (e.g. AI Sound Pro, Clear Voice Pro, Sports, Game);
+  unknown IDs show a stable generic label (e.g. `Mode 24`) and still select. A
+  bar only switches to modes valid for the current source/content — selecting an
+  unsupported one makes the bar fall back to its default (e.g. AI Sound Pro).
+  That's the soundbar's own behaviour, not a limitation of the integration.
+
+## Roadmap
+
+- **Voice feedback** (`b_voice_feedback`): not yet exposed. In the app this
+  toggle is sometimes greyed out, suggesting it depends on another setting/state
+  that must be enabled first; that pre-condition needs to be identified and
+  mirrored before the control can be offered reliably.
 
 ## Development
 

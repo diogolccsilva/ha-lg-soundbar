@@ -40,7 +40,8 @@
       "dialog_level": { "name": "Dialog level" },
       "bass": { "name": "Bass" },
       "middle": { "name": "Middle" },
-      "treble": { "name": "Treble" }
+      "treble": { "name": "Treble" },
+      "av_sync": { "name": "AV sync" }
     },
     "switch": {
       "neuralx": { "name": "Neural:X" },

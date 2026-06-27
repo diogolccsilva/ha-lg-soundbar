@@ -42,31 +42,45 @@ FUNCTIONS = [
     "USB 2",
 ]
 
-EQUALISERS = [
-    "Standard",
-    "Bass",
-    "Flat",
-    "Boost",
-    "Treble and Bass",
-    "User",
-    "Music",
-    "Cinema",
-    "Night",
-    "News",
-    "Voice",
-    "ia_sound",
-    "Adaptive Sound Control",
-    "Movie",
-    "Bass Blast",
-    "Dolby Atmos",
-    "DTS Virtual X",
-    "Bass Boost Plus",
-    "DTS X",
-]
+# Sound-mode (equaliser) IDs. The legacy positional IDs (0-18) come from
+# python-temescal; newer bars (e.g. the S95TR, 2024) advertise higher IDs that
+# don't fit that list, so this is an explicit ID -> name map. IDs 19/21/22/26
+# were confirmed on an S95TR. Note: a bar only switches to modes it actually
+# supports for the current source/content; selecting an unsupported one makes it
+# fall back to its default (e.g. AI Sound Pro), which is the bar's behaviour, not
+# a bug here.
+EQUALISERS: dict[int, str] = {
+    0: "Standard",
+    1: "Bass",
+    2: "Flat",
+    3: "Boost",
+    4: "Treble and Bass",
+    5: "User",
+    6: "Music",
+    7: "Cinema",
+    8: "Night",
+    9: "News",
+    10: "Voice",
+    11: "ia_sound",
+    12: "Adaptive Sound Control",
+    13: "Movie",
+    14: "Bass Blast",
+    15: "Dolby Atmos",
+    16: "DTS Virtual X",
+    17: "Bass Boost Plus",
+    18: "DTS X",
+    19: "AI Sound Pro",
+    21: "Sports",
+    22: "Game",
+    26: "Clear Voice Pro",
+}
 
 
-def _name(names: list[str], index: int, prefix: str) -> str:
-    if 0 <= index < len(names):
+def _name(names: dict[int, str] | list[str], index: int, prefix: str) -> str:
+    if isinstance(names, dict):
+        if index in names:
+            return names[index]
+    elif 0 <= index < len(names):
         return names[index]
     return f"{prefix} {index}"
 
