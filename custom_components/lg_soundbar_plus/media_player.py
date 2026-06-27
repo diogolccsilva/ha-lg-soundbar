@@ -85,7 +85,9 @@ class LGSoundbarMediaPlayer(LGSoundbarEntity, MediaPlayerEntity):
 
     _attr_name = None
     _attr_supported_features = (
-        MediaPlayerEntityFeature.VOLUME_SET
+        MediaPlayerEntityFeature.TURN_ON
+        | MediaPlayerEntityFeature.TURN_OFF
+        | MediaPlayerEntityFeature.VOLUME_SET
         | MediaPlayerEntityFeature.VOLUME_STEP
         | MediaPlayerEntityFeature.VOLUME_MUTE
         | MediaPlayerEntityFeature.SELECT_SOURCE
@@ -109,6 +111,19 @@ class LGSoundbarMediaPlayer(LGSoundbarEntity, MediaPlayerEntity):
             if self._data.get("b_powerstatus", True)
             else MediaPlayerState.OFF
         )
+
+    # -- power ---------------------------------------------------------------
+    # The bar exposes power as a momentary "power key" press (b_powerkey), not a
+    # settable state; b_powerstatus is read-only. We guard with the current
+    # state so each call only presses the key when a change is actually needed.
+
+    async def async_turn_on(self) -> None:
+        if self.state != MediaPlayerState.ON:
+            await self.coordinator.async_set_key(MSG_SPK, "b_powerkey", True)
+
+    async def async_turn_off(self) -> None:
+        if self.state != MediaPlayerState.OFF:
+            await self.coordinator.async_set_key(MSG_SPK, "b_powerkey", True)
 
     # -- volume --------------------------------------------------------------
 

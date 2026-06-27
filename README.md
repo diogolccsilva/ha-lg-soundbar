@@ -17,7 +17,7 @@ Built and verified against an **LG S95TR** (9.1.5).
 
 A single Home Assistant **device** per soundbar, with:
 
-- **Media player** — volume, mute, input/source, and sound mode.
+- **Media player** — power on/off, volume, mute, input/source, and sound mode.
 - **Per-channel level controls** — one `number` per channel your bar reports
   (woofer, center, side, top, rear, rear side, rear top, dialog). Ranges come
   from the soundbar itself.
@@ -71,9 +71,10 @@ Copy `custom_components/lg_soundbar_plus/` into your Home Assistant
 
 ## Notes & limitations
 
-- **Power on**: like LG TVs, a fully-off bar can't be powered on over the
-  socket; use the built-in [Wake-on-LAN](https://www.home-assistant.io/integrations/wake_on_lan/)
-  integration if your model supports it.
+- **Power on/off**: supported directly — the bar stays reachable on Wi-Fi in
+  standby and is woken via a "power key" press. (If your bar has Wi-Fi standby
+  disabled it won't be reachable when off; then use HDMI-CEC or
+  [Wake-on-LAN](https://www.home-assistant.io/integrations/wake_on_lan/).)
 - **Woofer / bass scaling**: surround levels map 1:1, but the woofer and bass
   values are reported on a different scale than their stated min/max. They're
   clamped to the reported range and logged at debug level; the mapping will be
