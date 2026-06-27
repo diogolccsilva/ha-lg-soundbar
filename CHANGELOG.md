@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-06-27
+
+### Fixed
+- **Speaker level / EQ scaling.** The bar encodes level fields as a 0-based wire
+  value (`0` == the channel minimum); the real value is offset by the reported
+  `min`. The integration now converts both ways (`displayed = raw + min`,
+  `wire = displayed - min`), so sliders show correct values and write correct
+  ones. Confirmed by app capture: dragging the woofer (range `-15..6`) to its
+  extremes sent raw `21` (=+6) and `0` (=-15). This also corrects symmetric
+  channels (rear/center/side) that previously appeared pinned at max when they
+  were actually at 0, and the bass tone (raw `12` == +6).
+
 ## [0.1.1] - 2026-06-27
 
 ### Added

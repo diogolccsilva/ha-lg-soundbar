@@ -75,10 +75,6 @@ Copy `custom_components/lg_soundbar_plus/` into your Home Assistant
   standby and is woken via a "power key" press. (If your bar has Wi-Fi standby
   disabled it won't be reachable when off; then use HDMI-CEC or
   [Wake-on-LAN](https://www.home-assistant.io/integrations/wake_on_lan/).)
-- **Woofer / bass scaling**: surround levels map 1:1, but the woofer and bass
-  values are reported on a different scale than their stated min/max. They're
-  clamped to the reported range and logged at debug level; the mapping will be
-  refined as it's confirmed against hardware.
 - **Newer sound modes**: IDs the protocol map doesn't have a name for are shown
   as a stable generic label (e.g. `Mode 26`) and still select correctly.
 

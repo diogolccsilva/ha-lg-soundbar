@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import logging
 from dataclasses import dataclass
 
 from homeassistant.components.number import NumberEntity, NumberMode
@@ -14,8 +13,6 @@ from . import LGSoundbarConfigEntry
 from .coordinator import LGSoundbarCoordinator
 from .entity import LGSoundbarEntity
 from .protocol import MSG_EQ, MSG_SETTING
-
-_LOGGER = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -113,23 +110,14 @@ class LGSoundbarLevel(LGSoundbarEntity, NumberEntity):
         raw = data.get(self._spec.key)
         if raw is None:
             return None
-        # Woofer/bass have been observed to report values outside their stated
-        # min/max (a different scale); clamp so the slider stays valid and log
-        # the raw value so the mapping can be confirmed against hardware.
+        # The wire value is 0-based (0 == the channel's minimum); the displayed
+        # value is offset by `min`. Confirmed by app capture: dragging the
+        # woofer (min -15, max 6) to its extremes sent raw 21 (=+6) and 0 (=-15).
         low, high = self.native_min_value, self.native_max_value
-        value = max(low, min(high, float(raw)))
-        if value != float(raw):
-            _LOGGER.debug(
-                "%s reported %s (outside %s..%s); clamped to %s",
-                self._spec.key,
-                raw,
-                low,
-                high,
-                value,
-            )
-        return value
+        value = float(raw) + low
+        return max(low, min(high, value))
 
     async def async_set_native_value(self, value: float) -> None:
-        await self.coordinator.async_set_key(
-            self._spec.message, self._spec.key, int(value)
-        )
+        # Reverse of the read offset: wire = displayed - min.
+        raw = int(value - self.native_min_value)
+        await self.coordinator.async_set_key(self._spec.message, self._spec.key, raw)
