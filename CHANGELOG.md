@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-06-27
+
+### Changed
+- **Tone controls (bass / middle / treble)** now appear in the primary
+  *Controls* section instead of *Configuration*, grouping them separately from
+  the per-channel level sliders (which stay under *Configuration*). Note: Home
+  Assistant's device page only has fixed buckets (Controls / Configuration /
+  Diagnostic / Sensors); a custom-named "Tone" section can be made on a
+  dashboard using a Sections view.
+
 ## [0.1.2] - 2026-06-27
 
 ### Fixed

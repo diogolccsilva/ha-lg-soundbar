@@ -24,6 +24,10 @@ class LevelSpec:
     message: str  # which view-info message the field lives in
     fallback_min: float = -6
     fallback_max: float = 6
+    # Channel levels sit under "Configuration"; tone controls (bass/middle/
+    # treble) are surfaced in the primary "Controls" section so they're grouped
+    # separately, mirroring the app's dedicated tone settings.
+    entity_category: EntityCategory | None = EntityCategory.CONFIG
 
     @property
     def base(self) -> str:
@@ -57,11 +61,18 @@ LEVEL_SPECS: tuple[LevelSpec, ...] = (
     ),
 )
 
-# EQ tone (EQ_VIEW_INFO).
+# EQ tone (EQ_VIEW_INFO). Surfaced in the primary section, separate from the
+# per-channel level sliders under Configuration.
 TONE_SPECS: tuple[LevelSpec, ...] = (
-    LevelSpec(key="i_bass", translation_key="bass", message=MSG_EQ),
-    LevelSpec(key="i_middle", translation_key="middle", message=MSG_EQ),
-    LevelSpec(key="i_treble", translation_key="treble", message=MSG_EQ),
+    LevelSpec(
+        key="i_bass", translation_key="bass", message=MSG_EQ, entity_category=None
+    ),
+    LevelSpec(
+        key="i_middle", translation_key="middle", message=MSG_EQ, entity_category=None
+    ),
+    LevelSpec(
+        key="i_treble", translation_key="treble", message=MSG_EQ, entity_category=None
+    ),
 )
 
 
@@ -86,12 +97,12 @@ class LGSoundbarLevel(LGSoundbarEntity, NumberEntity):
 
     _attr_native_step = 1
     _attr_mode = NumberMode.SLIDER
-    _attr_entity_category = EntityCategory.CONFIG
 
     def __init__(self, coordinator: LGSoundbarCoordinator, spec: LevelSpec) -> None:
         super().__init__(coordinator)
         self._spec = spec
         self._attr_translation_key = spec.translation_key
+        self._attr_entity_category = spec.entity_category
         self._attr_unique_id = f"{coordinator.unique_id}_{spec.key}"
 
     @property
