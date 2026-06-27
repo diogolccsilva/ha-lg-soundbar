@@ -1,0 +1,11 @@
+This product includes a re-implementation of the LG soundbar wire protocol
+(custom_components/lg_soundbar_plus/protocol.py) derived from the
+google/python-temescal project:
+
+    https://github.com/google/python-temescal
+    Copyright 2018 Google LLC
+    Licensed under the Apache License, Version 2.0.
+
+The protocol constants (AES key/IV and frame layout) originate from that
+project. The implementation here has been rewritten (full-frame reads, backoff
+reconnect, generic setters) for use in this Home Assistant integration.

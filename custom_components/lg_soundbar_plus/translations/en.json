@@ -1,0 +1,53 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add LG Soundbar",
+        "description": "Enter the soundbar's IP address. Give it a static/reserved lease on your router so it doesn't change.",
+        "data": {
+          "host": "IP address",
+          "name": "Name"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Couldn't reach the soundbar on port 9741. Check the IP and that the soundbar is on the same network."
+    },
+    "abort": {
+      "already_configured": "This soundbar is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "LG Soundbar options",
+        "description": "How often to resync with the soundbar (it also pushes changes in real time).",
+        "data": {
+          "scan_interval": "Polling interval (seconds)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "number": {
+      "woofer_level": { "name": "Woofer level" },
+      "center_level": { "name": "Center level" },
+      "side_level": { "name": "Side level" },
+      "top_level": { "name": "Top level" },
+      "rear_level": { "name": "Rear level" },
+      "rear_side_level": { "name": "Rear side level" },
+      "rear_top_level": { "name": "Rear top level" },
+      "dialog_level": { "name": "Dialog level" },
+      "bass": { "name": "Bass" },
+      "middle": { "name": "Middle" },
+      "treble": { "name": "Treble" }
+    },
+    "switch": {
+      "neuralx": { "name": "Neural:X" },
+      "drc": { "name": "Dynamic range control" },
+      "night_mode": { "name": "Night mode" },
+      "auto_volume": { "name": "Auto volume" },
+      "auto_power": { "name": "Auto power" }
+    }
+  }
+}
