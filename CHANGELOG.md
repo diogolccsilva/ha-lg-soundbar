@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.8] - 2026-06-27
+
+### Added
+- **Display brightness** select (`i_back_light`) for the front-panel display:
+  Auto brightness (`0`), Auto off (`1`), Always on (`2`). Confirmed by app
+  capture (`0` at rest; app cycled `1`/`2`). Adds the `select` platform.
+
 ## [0.1.7] - 2026-06-27
 
 ### Added

@@ -25,6 +25,8 @@ A single Home Assistant **device** per soundbar, with:
 - **AV sync** — audio delay (0–300 ms) to fix lip-sync.
 - **Sound-processing switches** — Neural:X, Dynamic Range Control, Night mode,
   Auto volume, Auto power, Voice feedback.
+- **Display brightness** — front-panel mode (Auto brightness / Auto off /
+  Always on).
 - **Real-time updates** — the soundbar *pushes* changes (from the app, remote,
   or front panel), so Home Assistant stays in sync without aggressive polling.
 

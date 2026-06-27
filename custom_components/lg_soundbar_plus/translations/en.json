@@ -50,6 +50,16 @@
       "auto_volume": { "name": "Auto volume" },
       "auto_power": { "name": "Auto power" },
       "voice_feedback": { "name": "Voice feedback" }
+    },
+    "select": {
+      "display_brightness": {
+        "name": "Display brightness",
+        "state": {
+          "auto_brightness": "Auto brightness",
+          "auto_off": "Auto off",
+          "always_on": "Always on"
+        }
+      }
     }
   }
 }
