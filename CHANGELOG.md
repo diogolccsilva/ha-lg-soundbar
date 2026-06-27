@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-06-27
+
+### Fixed
+- **AV sync wire scaling.** The bar stores AV sync as `1`–`30` steps of 10 ms
+  each, not the raw millisecond value. The control still shows milliseconds
+  (0–300 ms, 10 ms steps) but now divides by 10 before sending (and multiplies
+  on read), so the value written to the bar is correct.
+
 ## [0.1.5] - 2026-06-27
 
 ### Added

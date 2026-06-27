@@ -26,6 +26,10 @@ class LevelSpec:
     fallback_max: float = 6
     step: float = 1
     unit: str | None = None
+    # Display-to-wire scale. The displayed value is `raw * scale + min`; the wire
+    # value is `(displayed - min) / scale`. Levels are 1:1 (scale 1); AV sync is
+    # stored as 10 ms steps on the wire but shown in ms (scale 10).
+    scale: float = 1
 
     @property
     def base(self) -> str:
@@ -67,8 +71,8 @@ TONE_SPECS: tuple[LevelSpec, ...] = (
 )
 
 # Other adjustable settings (SETTING_VIEW_INFO) that aren't dB levels. AV sync
-# is an audio-delay in milliseconds (0-300 ms in 10 ms steps on LG bars); the
-# bar doesn't report bounds for it, so we use the known fixed range.
+# is an audio delay shown in ms; the bar stores it as 1-30 steps of 10 ms each
+# (so the wire value is ms / 10) and reports no bounds, hence the fixed range.
 OTHER_SPECS: tuple[LevelSpec, ...] = (
     LevelSpec(
         key="i_av_sync",
@@ -78,6 +82,7 @@ OTHER_SPECS: tuple[LevelSpec, ...] = (
         fallback_max=300,
         step=10,
         unit="ms",
+        scale=10,
     ),
 )
 
@@ -128,14 +133,16 @@ class LGSoundbarLevel(LGSoundbarEntity, NumberEntity):
         raw = data.get(self._spec.key)
         if raw is None:
             return None
-        # The wire value is 0-based (0 == the channel's minimum); the displayed
-        # value is offset by `min`. Confirmed by app capture: dragging the
-        # woofer (min -15, max 6) to its extremes sent raw 21 (=+6) and 0 (=-15).
+        # The wire value is 0-based (0 == the minimum); the displayed value is
+        # `raw * scale + min`. For levels scale is 1 and the offset is the
+        # channel min (confirmed by app capture: the woofer, min -15, sent raw 21
+        # for +6 and 0 for -15). AV sync uses scale 10 (10 ms wire steps shown in
+        # ms) with a min of 0.
         low, high = self.native_min_value, self.native_max_value
-        value = float(raw) + low
+        value = float(raw) * self._spec.scale + low
         return max(low, min(high, value))
 
     async def async_set_native_value(self, value: float) -> None:
-        # Reverse of the read offset: wire = displayed - min.
-        raw = int(value - self.native_min_value)
+        # Reverse of the read transform: wire = (displayed - min) / scale.
+        raw = round((value - self.native_min_value) / self._spec.scale)
         await self.coordinator.async_set_key(self._spec.message, self._spec.key, raw)
