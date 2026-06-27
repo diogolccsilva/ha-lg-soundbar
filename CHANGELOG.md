@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-06-27
+
+### Fixed
+- **Power off.** `b_powerkey` is explicit, not a toggle: `true` powers on,
+  `false` powers off (confirmed by app capture). `turn_off` now sends `false`
+  instead of `true`, so turning the bar off works. Removed the state guards so
+  the command always reaches the bar.
+
 ## [0.1.3] - 2026-06-27
 
 ### Changed
