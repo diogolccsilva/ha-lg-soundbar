@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7] - 2026-06-27
+
+### Added
+- **Voice feedback** switch (`b_voice_feedback`) — toggles the soundbar's
+  voice/beep prompts. It's a plain setting with no precondition, so it's exposed
+  directly (this corrects the earlier roadmap note, which mistook it for the
+  app's conditionally-greyed Dialog Control).
+
+### Docs
+- Replaced the inaccurate "Voice feedback" roadmap entry with a note that the
+  app greys some controls out by audio type (e.g. Dialog level with DTS:X) while
+  the integration leaves them usable, since the bar still accepts the write.
+
 ## [0.1.6] - 2026-06-27
 
 ### Fixed

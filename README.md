@@ -24,7 +24,7 @@ A single Home Assistant **device** per soundbar, with:
 - **EQ tone** — bass, middle, treble.
 - **AV sync** — audio delay (0–300 ms) to fix lip-sync.
 - **Sound-processing switches** — Neural:X, Dynamic Range Control, Night mode,
-  Auto volume, Auto power.
+  Auto volume, Auto power, Voice feedback.
 - **Real-time updates** — the soundbar *pushes* changes (from the app, remote,
   or front panel), so Home Assistant stays in sync without aggressive polling.
 
@@ -82,13 +82,10 @@ Copy `custom_components/lg_soundbar_plus/` into your Home Assistant
   bar only switches to modes valid for the current source/content — selecting an
   unsupported one makes the bar fall back to its default (e.g. AI Sound Pro).
   That's the soundbar's own behaviour, not a limitation of the integration.
-
-## Roadmap
-
-- **Voice feedback** (`b_voice_feedback`): not yet exposed. In the app this
-  toggle is sometimes greyed out, suggesting it depends on another setting/state
-  that must be enabled first; that pre-condition needs to be identified and
-  mirrored before the control can be offered reliably.
+- **Conditional controls**: the app greys some controls out depending on the
+  current audio (e.g. **Dialog level** / "Dialog Control" is only offered with
+  DTS:X content). The integration doesn't replicate that UI gating — the bar
+  still accepts the write, so the control stays usable in Home Assistant.
 
 ## Development
 

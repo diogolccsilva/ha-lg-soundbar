@@ -37,6 +37,11 @@ TOGGLE_SPECS: tuple[ToggleSpec, ...] = (
     ToggleSpec(
         key="b_auto_power", translation_key="auto_power", icon="mdi:power-sleep"
     ),
+    ToggleSpec(
+        key="b_voice_feedback",
+        translation_key="voice_feedback",
+        icon="mdi:account-voice",
+    ),
 )
 
 

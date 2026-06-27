@@ -48,7 +48,8 @@
       "drc": { "name": "Dynamic range control" },
       "night_mode": { "name": "Night mode" },
       "auto_volume": { "name": "Auto volume" },
-      "auto_power": { "name": "Auto power" }
+      "auto_power": { "name": "Auto power" },
+      "voice_feedback": { "name": "Voice feedback" }
     }
   }
 }
